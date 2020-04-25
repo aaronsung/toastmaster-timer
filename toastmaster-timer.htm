@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Timer</title>
+
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script>
+    var timer;
+    var isStart = false;
+    $(document).ready(function(){
+      $("body").css('background-color', 'white');   
+      $('#startButton').click(function(){
+
+        if(isStart){
+          return;
+        }else{
+          isStart = true;
+        }
+        var start = new Date;
+        var lapsed = 0;
+
+        timer = setInterval(function() {
+
+            lapsed++;
+            var currentSeconds = lapsed % 60;
+            var currentMinutes = Math.floor(lapsed/60);
+            $('#lblTimer').text(currentMinutes.toString() + " : "+ currentSeconds.toString());
+            var green = parseInt($('#greentimeMin').val()) * 60 + parseInt($('#greentimeSec').val());
+            var yellow = parseInt($('#yellowtimeMin').val()) * 60 + parseInt($('#yellowtimeSec').val());
+            var red = parseInt($('#redtimeMin').val()) * 60 + parseInt($('#redtimeSec').val());
+
+            if(lapsed>=green && lapsed<yellow){
+              $("body").css('background-color', 'green');
+            }else if(lapsed >=yellow && lapsed< red){
+              $("body").css('background-color', 'yellow');
+            }else if(lapsed>=red){
+              $("body").css('background-color', 'red');
+            }
+        }, 1000);
+
+      });
+      $('#resetButton').click(function(){
+        location.reload();
+      });
+      $('#stopButton').click(function(){
+ 
+        clearInterval(timer);
+        isStart = false;
+      });
+    }); 
+  </script>
+</head>
+<body>
+
+<div class="container">
+<div id="lblTimer">0 : 0</div>
+  Green Card show at: <input type="text" id="greentimeMin" size="2" value="1"></input>Mins, 
+  <input type="text" id="greentimeSec" value="0" size="2"></input>Seconds</br>
+  Yellow Card show at: <input type="text" id="yellowtimeMin" size="2" value="2"></input>Mins, 
+  <input type="text" id="yellowtimeSec" value="0" size="2"></input>Seconds</br>
+  Red Card show at: <input type="text" id="redtimeMin" size="2" value="3"></input>Mins, 
+  <input type="text" id="redtimeSec" value="0" size="2"></input>Seconds</br>
+<button type="button" class="btn btn-primary" id="startButton">Start</button>
+<button type="button" class="btn btn-primary" id="stopButton">Stop</button>
+<button type="button" class="btn btn-primary" id="resetButton">Reset</button>
+</div>  
+</body>
+</html>
